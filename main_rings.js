@@ -70,7 +70,9 @@ let speed = {
         x: 0,
         y: 0,
         z: 0
-    }
+    },
+    scale:5,
+    fading: 0.001
 }
 let mouse = {
     x: 0,
@@ -106,19 +108,19 @@ function render(time) {
     }
     time *= 0.001; // convert to seconds;
 
-    speed.rotation.x += (mouse.y - speed.rotation.x) * 0.01
-    speed.rotation.y += (mouse.x - speed.rotation.y) * 0.01
-    speed.rotation.z += (mouse.z - speed.rotation.z) * 0.01
+    speed.rotation.x += (mouse.y - speed.rotation.x) * speed.fading;
+    speed.rotation.y += (mouse.x - speed.rotation.y) * speed.fading;
+    speed.rotation.z += (mouse.z - speed.rotation.z) * speed.fading;
    
-    plane.rotation.x = speed.maxX * Math.sin(speed.rotation.x);
-    plane.rotation.y = speed.maxY * Math.sin(speed.rotation.y);
-    plane.rotation.z = speed.maxZ * Math.sin(speed.rotation.z);
+    plane.rotation.x = speed.maxX * Math.sin(speed.scale*speed.rotation.x);
+    plane.rotation.y = speed.maxY * Math.sin(speed.scale*speed.rotation.y);
+    plane.rotation.z = speed.maxZ * Math.sin(speed.scale*speed.rotation.z);
     
     
     ringspos.forEach((p) => {
         //p.ring.rotation.z = p.rotz / 180 * Math.PI + p.maxX * Math.sin(speed.rotation.x);
-        p.ring.rotation.x = p.rotx / 180 * Math.PI + p.maxX * Math.sin(speed.rotation.x);
-        p.ring.rotation.y = 0 + p.maxY * Math.sin(speed.rotation.y);
+        p.ring.rotation.x = p.rotx / 180 * Math.PI + p.maxX * Math.sin(speed.scale*speed.rotation.x);
+        p.ring.rotation.y = 0 + p.maxY * Math.sin(speed.scale*speed.rotation.y);
         
     });
     
