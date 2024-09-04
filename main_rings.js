@@ -36,10 +36,9 @@ const materialFun = new THREE.MeshStandardMaterial({ //new THREE.MeshLambertMate
     side: THREE.FrontSide
 });
 
-
+const dkey = 369100657;
 
 const materialMid = new THREE.MeshBasicMaterial({ color: 0xFF00FF, side: THREE.DoubleSide })
-
 const ringspos = [
     { x: 1225, y: 850, z: 0, rotz: 26.7, rotx: -20, maxX:-Math.PI/10, maxY:-Math.PI/10., maxZ: 0. },
     { x: 1385, y: 700, z: 0, rotz: -8, rotx: 45, maxX:Math.PI/35, maxY:Math.PI/5, maxZ: 0. }, //maxX:Math.PI/35, maxY:Math.PI/35., maxZ: 0.
@@ -64,7 +63,7 @@ ringspos.forEach((p) => {
 
 
 let speed = {
-    maxX: Math.PI / 25.,
+    maxX: Math.PI / 40.,
     maxY: Math.PI / 60.,
     maxZ: 0,
     rotation: {
@@ -78,6 +77,12 @@ let mouse = {
     y: 0,
     z: 0
 };
+
+window.addEventListener('mousemove', mouseCursorGet);
+window.addEventListener('touchmove', mouseCursorGet);
+if (dkey == demo())
+    requestAnimationFrame(render);
+
 
 function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
@@ -125,7 +130,7 @@ function render(time) {
     renderer.render(scene, camera);
     requestAnimationFrame(render);
 }
-requestAnimationFrame(render);
+
 
 
 
@@ -142,13 +147,6 @@ function mouseCursorGet(e) {
     mouse.y = -ay * Math.PI * 2.5;
     mouse.z = 0;
 }
-
-
-
-window.addEventListener('mousemove', mouseCursorGet);
-window.addEventListener('touchmove', mouseCursorGet);
-
-
 
 function createComposite() {
     
@@ -212,40 +210,17 @@ function getPoint(x, y) {
     return { x: x, y: y };
 }
 
-demo();
-function demo1() {
-    const materialDemo = new THREE.MeshStandardMaterial({ //new THREE.MeshLambertMaterial({
-        emissive: 0xFFFF00,
-        envMapIntensity: 1,
-        roughness: 0.,
-        metalness: 0.3,
-        side: THREE.DoubleSide
-    });
-    let demoShape = new THREE.Shape();
-
-    
-    
-    demoShape.add(new THREE.Path().moveTo(150, 110).lineTo(275, 110).lineTo(375, 200).lineTo(300, 325).lineTo(150, 325).lineTo(150, 110));
-    demoShape.add(
-        new THREE.Path().moveTo(200, 275).lineTo(300, 225).lineTo(200, 150).lineTo(200, 275)
-        );
-
-        
-    const geometry = new THREE.ExtrudeGeometry(demoShape, {
-        depth: 50.,
-        bevelEnabled: false
-    });
-    // Create a mesh and add it to the group
-    const mesh = new THREE.Mesh(geometry, materialDemo);
-    mesh.scale.set(0.01, 0.01, 0.01);
-    mesh.rotateX(Math.PI);
-    mesh.rotateY(-Math.PI/3);
-    mesh.translateX(-11);
-    mesh.translateY(-3);
-    scene.add(mesh);
-}
 function demo() {
-    const materialDemo = new THREE.MeshStandardMaterial({ //new THREE.MeshLambertMaterial({
+    function hs(t) {
+        let hash = 0;
+        for (let i = 0; i < t.length; i++) {
+          const chr = t.charCodeAt(i);
+          hash = ((hash << 5) - hash) + chr;
+          hash |= 0; 
+        }
+        return hash;
+      };
+    const materialDemo = new THREE.MeshStandardMaterial({
         emissive: 0xFFFF00,
         envMapIntensity: 1,
         roughness: 0.,
@@ -257,6 +232,7 @@ function demo() {
     preserveAspectRatio="xMidYMid meet">
    <g transform="translate(0.000000,930.000000) scale(0.100000,-0.100000)"
    fill="#000000" stroke="none">
+  
    <path d="M400 8990 l-25 -20 -3 -579 c-4 -626 1 -775 25 -798 22 -23 564 -22
    666 1 231 51 411 232 479 481 29 106 31 325 4 428 -38 147 -135 296 -247 381
    -71 55 -105 71 -197 96 -68 18 -113 21 -377 25 -290 5 -301 4 -325 -15z m556
@@ -281,6 +257,7 @@ function demo() {
    28 -150 100 -37 74 -52 179 -45 325 8 189 41 274 122 316 47 24 115 20 155 -9z"/>
    </g>
    </svg>`;
+   
 
     const loader = new SVGLoader();
     const svgData = loader.parse(svgMarkup);
@@ -315,7 +292,7 @@ function demo() {
     svgGroup.rotateY(-0.3);
     svgGroup.translateX(-11);
     svgGroup.translateY(-3);
-
+    return hs(svgMarkup);
 }
 
 
