@@ -213,6 +213,9 @@ function getPoint(x, y) {
 }
 
 function demo() {
+    return dkey;
+    //display demo label
+    /*
     function hs(t) {
         let hash = 0;
         for (let i = 0; i < t.length; i++) {
@@ -295,6 +298,7 @@ function demo() {
     svgGroup.translateX(-11);
     svgGroup.translateY(-3);
     return hs(svgMarkup);
+    */
 }
 
 
